@@ -24,15 +24,15 @@ class DbSessionHandler implements SessionHandlerInterface {
         @$this->conn->query($sql);
     }
 
-    public function open($savePath, $sessionName) {
+    public function open(string $savePath, string $sessionName): bool {
         return true;
     }
 
-    public function close() {
+    public function close(): bool {
         return true;
     }
 
-    public function read($id) {
+    public function read(string $id): string|false {
         $now = time();
         $stmt = $this->conn->prepare("SELECT data FROM {$this->table} WHERE id=? AND expires > ? LIMIT 1");
         if (!$stmt) return '';
@@ -48,7 +48,7 @@ class DbSessionHandler implements SessionHandlerInterface {
         return '';
     }
 
-    public function write($id, $data) {
+    public function write(string $id, string $data): bool {
         $expires = time() + (int)ini_get('session.gc_maxlifetime');
         $stmt = $this->conn->prepare("INSERT INTO {$this->table} (id, data, expires) VALUES (?,?,?) ON DUPLICATE KEY UPDATE data=VALUES(data), expires=VALUES(expires)");
         if (!$stmt) return false;
@@ -58,7 +58,7 @@ class DbSessionHandler implements SessionHandlerInterface {
         return $ok;
     }
 
-    public function destroy($id) {
+    public function destroy(string $id): bool {
         $stmt = $this->conn->prepare("DELETE FROM {$this->table} WHERE id=?");
         if (!$stmt) return false;
         $stmt->bind_param('s', $id);
@@ -67,14 +67,14 @@ class DbSessionHandler implements SessionHandlerInterface {
         return $ok;
     }
 
-    public function gc($maxlifetime) {
+    public function gc(int $maxlifetime): int|false {
         $now = time();
         $stmt = $this->conn->prepare("DELETE FROM {$this->table} WHERE expires < ?");
         if (!$stmt) return false;
         $stmt->bind_param('i', $now);
         $ok = $stmt->execute();
         $stmt->close();
-        return $ok;
+        return $ok ? 1 : false;
     }
 }
 
@@ -83,20 +83,20 @@ if (!defined('DB_SESSION_REGISTERED')) {
     define('DB_SESSION_REGISTERED', true);
 
     $handler = new DbSessionHandler($conn);
-    session_set_save_handler($handler, true);
+    if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+        session_set_save_handler($handler, true);
 
-    // Cookie setting yang aman
-    $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (getenv('SESSION_COOKIE_SECURE') === '1');
-    session_set_cookie_params([
-        'lifetime' => 0,
-        'path' => '/',
-        'domain' => '',
-        'secure' => $secure,
-        'httponly' => true,
-        'samesite' => 'Lax'
-    ]);
+        // Cookie setting yang aman
+        $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (getenv('SESSION_COOKIE_SECURE') === '1');
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'path' => '/',
+            'domain' => '',
+            'secure' => $secure,
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
 
-    if (session_status() === PHP_SESSION_NONE) {
         session_name('TDSESSID');
         session_start();
     }

@@ -2,6 +2,11 @@
 // Vercel PHP entry: route all requests to the right PHP file under project root
 // This keeps your existing structure working without moving files into /api.
 
+// Enable output buffering early to avoid "headers already sent" during session init
+if (function_exists('ob_start')) {
+    ob_start();
+}
+
 // Detect project root (parent of /api)
 $root = dirname(__DIR__);
 
@@ -34,6 +39,9 @@ if ($reqPath === '' || $reqPath === '/') {
         } else {
             http_response_code(404);
             echo '404 Not Found';
+            if (function_exists('ob_get_length') && ob_get_length()) {
+                @ob_end_flush();
+            }
             exit;
         }
     }
@@ -44,3 +52,8 @@ chdir(dirname($target));
 
 // Serve the target script
 require $target;
+
+// Flush output
+if (function_exists('ob_get_length') && ob_get_length()) {
+    @ob_end_flush();
+}
