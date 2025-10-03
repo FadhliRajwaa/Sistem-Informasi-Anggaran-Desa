@@ -370,40 +370,7 @@ include "includes/header.php";
     </div>
 </section>
 
-<!-- Call to Action Section -->
-<section class="py-20 bg-gradient-to-br from-dark-800 via-dark-700 to-dark-800 relative overflow-hidden">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-30"></div>
-    </div>
-    
-    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="animate-fade-in">
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-                Mulai Mengakses <span class="bg-gradient-to-r from-primary-200 to-accent-200 bg-clip-text text-transparent">Transparansi Desa</span>
-            </h2>
-            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Bergabunglah dalam upaya meningkatkan transparansi dan akuntabilitas pemerintahan desa
-            </p>
-            
-            <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-slide-up" style="animation-delay: 0.3s">
-                <a href="evaluasi.php" class="group bg-gradient-to-r from-primary to-primary-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 hover:scale-105 flex items-center space-x-2">
-                    <i class="fas fa-pencil-alt group-hover:rotate-12 transition-transform duration-300"></i>
-                    <span>Kirim Evaluasi</span>
-                </a>
-                <a href="admin/login.php" class="group border-2 border-accent text-accent px-8 py-4 rounded-xl font-semibold text-lg hover:bg-accent hover:text-white transition-all duration-300 hover:scale-105 flex items-center space-x-2">
-                    <i class="fas fa-user-shield group-hover:rotate-12 transition-transform duration-300"></i>
-                    <span>Login Admin</span>
-                </a>
-                <a href="#cari-desa" class="group text-white hover:text-primary transition-colors duration-300 flex items-center space-x-2 font-medium">
-                    <i class="fas fa-search group-hover:rotate-12 transition-transform duration-300"></i>
-                    <span>Cari Desa Lain</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- CTA section dihapus sesuai revisi klien -->
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

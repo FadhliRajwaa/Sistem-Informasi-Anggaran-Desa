@@ -29,73 +29,10 @@
                             mendukung akuntabilitas pemerintahan desa yang lebih baik.
                         </p>
                         
-                        <!-- Social Links -->
-                        <div class="flex space-x-4">
-                            <a href="#" class="w-10 h-10 bg-primary/20 hover:bg-primary text-primary hover:text-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a href="#" class="w-10 h-10 bg-primary/20 hover:bg-primary text-primary hover:text-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a href="#" class="w-10 h-10 bg-primary/20 hover:bg-primary text-primary hover:text-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                        </div>
+                        <!-- Social Links dihapus sesuai revisi klien -->
                     </div>
                     
-                    <!-- Quick Links -->
-                    <div class="animate-slide-up">
-                        <h4 class="text-lg font-semibold mb-4 text-primary">Menu Utama</h4>
-                        <ul class="space-y-3">
-                            <li>
-                                <a href="index.php" class="text-dark-200 hover:text-primary transition-colors duration-300 flex items-center space-x-2 group">
-                                    <i class="fas fa-home group-hover:text-primary transition-colors duration-300"></i>
-                                    <span>Beranda</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.php" class="text-dark-200 hover:text-primary transition-colors duration-300 flex items-center space-x-2 group">
-                                    <i class="fas fa-search group-hover:text-primary transition-colors duration-300"></i>
-                                    <span>Cari Desa</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="evaluasi.php" class="text-dark-200 hover:text-primary transition-colors duration-300 flex items-center space-x-2 group">
-                                    <i class="fas fa-comments group-hover:text-accent transition-colors duration-300"></i>
-                                    <span>Kirim Evaluasi</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="admin/login.php" class="text-dark-200 hover:text-accent transition-colors duration-300 flex items-center space-x-2 group">
-                                    <i class="fas fa-user-shield group-hover:text-accent transition-colors duration-300"></i>
-                                    <span>Login Admin</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Information -->
-                    <div class="animate-slide-up" style="animation-delay: 0.2s">
-                        <h4 class="text-lg font-semibold mb-4 text-accent">Informasi</h4>
-                        <div class="space-y-4">
-                            <div class="flex items-start space-x-3">
-                                <div class="bg-primary/20 p-2 rounded-lg flex-shrink-0 mt-1">
-                                    <i class="fas fa-info-circle text-primary text-sm"></i>
-                                </div>
-                                <p class="text-dark-200 text-sm leading-relaxed">
-                                    Platform ini menyediakan akses terbuka terhadap informasi anggaran dan pembangunan desa.
-                                </p>
-                            </div>
-                            <div class="flex items-start space-x-3">
-                                <div class="bg-accent/20 p-2 rounded-lg flex-shrink-0 mt-1">
-                                    <i class="fas fa-eye text-accent text-sm"></i>
-                                </div>
-                                <p class="text-dark-200 text-sm leading-relaxed">
-                                    Semua data telah melalui verifikasi dan persetujuan dari pihak yang berwenang.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Menu Utama & Informasi dihapus sesuai revisi klien -->
                 </div>
             </div>
             
@@ -106,10 +43,7 @@
                         <div class="text-dark-300 text-sm text-center md:text-left">
                             <p>&copy; <?= date('Y') ?> Sistem Informasi Transparansi Desa. All rights reserved.</p>
                         </div>
-                        <div class="flex items-center space-x-2 text-dark-300 text-sm">
-                            <i class="fas fa-code text-primary"></i>
-                            <span>Dikembangkan untuk Transparansi Pemerintahan Desa</span>
-                        </div>
+                        <!-- Tagline pengembang dihapus sesuai revisi klien -->
                     </div>
                 </div>
             </div>

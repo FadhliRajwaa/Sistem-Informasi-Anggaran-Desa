@@ -425,7 +425,7 @@ ALTER TABLE `anggaran_jenis`
 -- AUTO_INCREMENT for table `desa`
 --
 ALTER TABLE `desa`
-  MODIFY `id_desa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
+  MODIFY `id_desa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT for table `evaluasi`
@@ -460,6 +460,49 @@ ALTER TABLE `evaluasi`
 --
 ALTER TABLE `pembangunan`
   ADD CONSTRAINT `pembangunan_ibfk_1` FOREIGN KEY (`id_desa`) REFERENCES `desa` (`id_desa`) ON DELETE CASCADE;
+
+-- ========== DUMMY SEED DATA ==========
+-- Anggaran: 3 jenis per desa untuk tahun 2024, idempotent
+INSERT INTO `anggaran` (`id_desa`, `jenis_anggaran`, `jumlah`, `tahun`)
+SELECT d.id_desa, t.jenis, (100000000 + d.id_desa*10000 + t.idx*5000), 2024
+FROM `desa` d
+CROSS JOIN (
+  SELECT 0 AS idx, 'Dana Desa' AS jenis
+  UNION ALL SELECT 1, 'Alokasi Dana Desa'
+  UNION ALL SELECT 2, 'Pendapatan Asli Desa'
+) t
+LEFT JOIN `anggaran` a ON a.id_desa=d.id_desa AND a.jenis_anggaran=t.jenis AND a.tahun=2024
+WHERE a.id_anggaran IS NULL;
+
+-- Pembangunan: 1 proyek per desa untuk tahun 2024, idempotent per desa+tahun
+INSERT INTO `pembangunan` (`id_desa`, `lokasi`, `realisasi`, `kegiatan`, `tahun`)
+SELECT d.id_desa,
+       CONCAT('Lokasi ', d.nama_desa),
+       (50000000 + d.id_desa*1000),
+       CONCAT('Pembangunan fasilitas di ', d.nama_desa),
+       2024
+FROM `desa` d
+LEFT JOIN `pembangunan` p ON p.id_desa=d.id_desa AND p.tahun=2024
+WHERE p.id_pembangunan IS NULL;
+
+-- Evaluasi: 1 evaluasi approved per desa, idempotent
+INSERT INTO `evaluasi` (`id_desa`, `nama`, `kontak`, `kategori`, `laporan`, `status`, `tanggal`)
+SELECT d.id_desa,
+       CONCAT('Warga ', d.nama_desa),
+       CONCAT('08', LPAD(d.id_desa, 10, '0')),
+       'Pemantauan Proyek',
+       CONCAT('Laporan dummy untuk desa ', d.nama_desa),
+       'approved',
+       NOW()
+FROM `desa` d
+LEFT JOIN (
+  SELECT id_desa, MIN(id_evaluasi) AS any_row
+  FROM `evaluasi`
+  WHERE status='approved'
+  GROUP BY id_desa
+) e ON e.id_desa=d.id_desa
+WHERE e.any_row IS NULL;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

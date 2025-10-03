@@ -162,10 +162,7 @@ $total_evaluasi_pending = $conn->query("SELECT COUNT(*) as total FROM evaluasi W
                 
                 <div class="border-t border-white/10 my-4"></div>
                 
-                <a href="import_data.php" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">
-                    <i class="fas fa-upload"></i>
-                    <span>Import Data CSV</span>
-                </a>
+                <!-- Link Import Data CSV dihapus sesuai revisi klien -->
                 <a href="../index.php" target="_blank" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">
                     <i class="fas fa-external-link-alt"></i>
                     <span>Lihat Situs</span>
@@ -288,51 +285,7 @@ $total_evaluasi_pending = $conn->query("SELECT COUNT(*) as total FROM evaluasi W
                     </div>
                 
                 </div>
-                <!-- Quick Actions -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 mb-8">
-                    <h3 class="text-xl font-bold text-dark-800 mb-6 flex items-center">
-                        <i class="fas fa-bolt text-accent mr-3"></i>
-                        Aksi Cepat
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <button onclick="showTab('desa')" class="w-full flex items-center space-x-3 p-4 bg-primary/10 hover:bg-primary/20 rounded-xl border border-primary/20 hover:border-primary/40 transition-all duration-200">
-                            <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
-                                <i class="fas fa-plus text-white"></i>
-                            </div>
-                            <div class="text-left min-w-0">
-                                <p class="font-semibold text-dark-800 leading-tight">Tambah Desa</p>
-                                <p class="text-sm text-dark-500 leading-tight">Data desa baru</p>
-                            </div>
-                        </button>
-                        <button onclick="showTab('anggaran')" class="w-full flex items-center space-x-3 p-4 bg-accent/10 hover:bg-accent/20 rounded-xl border border-accent/20 hover:border-accent/40 transition-all duration-200">
-                            <div class="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
-                                <i class="fas fa-money-bill-wave text-white"></i>
-                            </div>
-                            <div class="text-left min-w-0">
-                                <p class="font-semibold text-dark-800 leading-tight">Kelola Anggaran</p>
-                                <p class="text-sm text-dark-500 leading-tight">Input anggaran</p>
-                            </div>
-                        </button>
-                        <button onclick="showTab('pembangunan')" class="w-full flex items-center space-x-3 p-4 bg-dark-100 hover:bg-dark-200 rounded-xl border border-dark-200 hover:border-dark-300 transition-all duration-200">
-                            <div class="w-12 h-12 bg-dark-600 rounded-xl flex items-center justify-center">
-                                <i class="fas fa-hammer text-white"></i>
-                            </div>
-                            <div class="text-left min-w-0">
-                                <p class="font-semibold text-dark-800 leading-tight">Data Pembangunan</p>
-                                <p class="text-sm text-dark-500 leading-tight">Proyek baru</p>
-                            </div>
-                        </button>
-                        <button onclick="showTab('evaluasi')" class="w-full flex items-center space-x-3 p-4 bg-orange-100 hover:bg-orange-200 rounded-xl border border-orange-200 hover:border-orange-300 transition-all duration-200">
-                            <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
-                                <i class="fas fa-comments text-white"></i>
-                            </div>
-                            <div class="text-left min-w-0">
-                                <p class="font-semibold text-dark-800 leading-tight">Review Evaluasi</p>
-                                <p class="text-sm text-dark-500 leading-tight"><?= $total_evaluasi_pending ?> menunggu</p>
-                            </div>
-                        </button>
-                    </div>
-                </div>
+                <!-- Aksi Cepat dihapus sesuai revisi klien -->
             </div>
 
             <!-- Other Tab Contents -->
