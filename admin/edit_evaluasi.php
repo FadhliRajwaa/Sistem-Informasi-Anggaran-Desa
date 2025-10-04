@@ -1,6 +1,7 @@
 <?php
 include "../includes/db.php";
 include "../includes/auth.php";
+include "../includes/flash.php";
 
 $id = (int)$_GET['id'];
 $stmt = $conn->prepare("SELECT e.*, d.nama_desa, d.kecamatan FROM evaluasi e JOIN desa d ON e.id_desa = d.id_desa WHERE id_evaluasi = ?");
@@ -24,10 +25,16 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
 
     $stmt = $conn->prepare("UPDATE evaluasi SET nama=?, kontak=?, kategori=?, laporan=?, status=? WHERE id_evaluasi=?");
     $stmt->bind_param("sssssi", $nama, $kontak, $kategori, $laporan, $status, $id);
-    $stmt->execute();
+    $ok = $stmt->execute();
+    $err = $stmt->error;
     $stmt->close();
 
-    header("Location: dashboard.php");
+    if ($ok) {
+        flash_set('success', 'Berhasil', 'Perubahan evaluasi telah disimpan.');
+    } else {
+        flash_set('error', 'Gagal', 'Gagal menyimpan perubahan: ' . $err);
+    }
+    header("Location: dashboard.php#evaluasi");
     exit;
 }
 ?>
@@ -40,7 +47,8 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script>
-        tailwind.config = { theme: { extend: { colors: { primary:'#08D9D6', accent:'#FF2E63', dark:'#252A34', orange:'#f97316' } } } }
+        // Jangan override palette "orange" default agar kelas bg-orange-500/300/400 tetap tersedia
+        tailwind.config = { theme: { extend: { colors: { primary:'#08D9D6', accent:'#FF2E63', dark:'#252A34', 'brand-orange':'#f97316' } } } }
     </script>
     <style>
         .glass-effect{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
@@ -100,11 +108,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                     </div>
                     <div class="flex gap-3 pt-2">
                         <button type="submit" class="inline-flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-xl hover:opacity-90 transition-all"><i class="fas fa-save"></i><span>Update</span></button>
-                        <a href="dashboard.php" class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-200 transition-all"><i class="fas fa-arrow-left"></i><span>Kembali</span></a>
+                        <a href="dashboard.php#evaluasi" class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-200 transition-all"><i class="fas fa-arrow-left"></i><span>Kembali</span></a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+<?php /* loading overlay */ include "../includes/ui.php"; ?>
 </body>
 </html>

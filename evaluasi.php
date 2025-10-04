@@ -104,41 +104,39 @@ include "includes/header.php";
 <!-- Form Section -->
 <section class="min-h-screen bg-gray-50 py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Success/Error Messages -->
+        <!-- Success/Error Modal -->
         <?php if ($message): ?>
-            <div class="mb-8 animate-slide-down">
-                <?php if ($message === 'success'): ?>
-                    <div class="bg-green-500/10 backdrop-blur-lg border border-green-500/30 rounded-xl p-6 flex items-start space-x-4">
-                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-white text-sm"></i>
+            <?php
+                $t = $message;
+                $title = $t==='success' ? 'Evaluasi Berhasil Dikirim!' : ($t==='error' ? 'Gagal Mengirim Evaluasi' : 'Data Tidak Lengkap');
+                $text  = $t==='success' ? 'Evaluasi Anda berhasil dikirim dan sedang menunggu moderasi. Terima kasih.' : ($t==='error' ? 'Terjadi kesalahan saat mengirim evaluasi. Silakan coba lagi.' : 'Laporan harus diisi dan desa harus dipilih.');
+                $ico   = $t==='success' ? 'fa-check-circle text-green-600' : ($t==='error' ? 'fa-times-circle text-red-600' : 'fa-exclamation-triangle text-yellow-600');
+                $bar   = $t==='success' ? 'bg-green-500' : ($t==='error' ? 'bg-red-500' : 'bg-yellow-500');
+            ?>
+            <div id="public-flash" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
+                <div class="bg-white rounded-2xl shadow-2xl max-w-md w-[90%] p-6 border" role="dialog" aria-modal="true">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-50 border">
+                            <i class="fas <?= $ico ?> text-xl"></i>
                         </div>
-                        <div>
-                            <h4 class="text-green-800 font-semibold mb-2">Evaluasi Berhasil Dikirim!</h4>
-                            <p class="text-green-700">Evaluasi Anda berhasil dikirim dan sedang menunggu moderasi. Terima kasih atas partisipasinya.</p>
-                        </div>
+                        <h3 class="text-lg font-bold text-dark-800"><?= htmlspecialchars($title) ?></h3>
                     </div>
-                <?php elseif ($message === 'error'): ?>
-                    <div class="bg-red-500/10 backdrop-blur-lg border border-red-500/30 rounded-xl p-6 flex items-start space-x-4">
-                        <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-times text-white text-sm"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-red-800 font-semibold mb-2">Gagal Mengirim Evaluasi</h4>
-                            <p class="text-red-700">Terjadi kesalahan saat mengirim evaluasi. Silakan coba lagi.</p>
-                        </div>
+                    <p class="text-dark-600 mb-4"><?= htmlspecialchars($text) ?></p>
+                    <div class="flex justify-end">
+                        <button id="public-flash-close" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white <?= $bar ?> hover:opacity-90">
+                            <i class="fas fa-check"></i>
+                            <span>Tutup</span>
+                        </button>
                     </div>
-                <?php elseif ($message === 'warning'): ?>
-                    <div class="bg-yellow-500/10 backdrop-blur-lg border border-yellow-500/30 rounded-xl p-6 flex items-start space-x-4">
-                        <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-exclamation-triangle text-white text-sm"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-yellow-800 font-semibold mb-2">Data Tidak Lengkap</h4>
-                            <p class="text-yellow-700">Laporan harus diisi dan desa harus dipilih. Silakan lengkapi form.</p>
-                        </div>
-                    </div>
-                <?php endif; ?>
+                </div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function(){
+                    const btn = document.getElementById('public-flash-close');
+                    const m = document.getElementById('public-flash');
+                    if(btn && m){ btn.addEventListener('click', ()=> m.remove()); }
+                });
+            </script>
         <?php endif; ?>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">

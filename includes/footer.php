@@ -91,11 +91,11 @@
                 if (target) {
                     target.scrollIntoView({
                         behavior: 'smooth',
-                        block: 'start'
                     });
                 }
             });
         });
     </script>
-</body>
-</html>
+    <?php include __DIR__ . '/ui.php'; ?>
+    </body>
+    </html>

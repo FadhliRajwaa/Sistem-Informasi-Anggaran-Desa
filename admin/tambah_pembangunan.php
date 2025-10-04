@@ -1,6 +1,7 @@
 <?php
 include "../includes/db.php";
 include "../includes/auth.php";
+include "../includes/flash.php";
 
 if ($_SERVER['REQUEST_METHOD']=="POST") {
     $id_desa   = (int)$_POST['id_desa'];
@@ -11,10 +12,16 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
 
     $stmt = $conn->prepare("INSERT INTO pembangunan (id_desa, tahun, kegiatan, lokasi, realisasi) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("iissd", $id_desa, $tahun, $kegiatan, $lokasi, $realisasi);
-    $stmt->execute();
+    $ok = $stmt->execute();
+    $err = $stmt->error;
     $stmt->close();
 
-    header("Location: dashboard.php");
+    if ($ok) {
+        flash_set('success', 'Berhasil', 'Data pembangunan berhasil ditambahkan.');
+    } else {
+        flash_set('error', 'Gagal', 'Gagal menambah pembangunan: ' . $err);
+    }
+    header("Location: dashboard.php#pembangunan");
     exit;
 }
 ?>
@@ -83,11 +90,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                     </div>
                     <div class="flex gap-3 pt-2">
                         <button type="submit" class="inline-flex items-center gap-2 bg-dark text-white px-4 py-2 rounded-xl hover:opacity-90 transition-all"><i class="fas fa-save"></i><span>Simpan</span></button>
-                        <a href="dashboard.php" class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-200 transition-all"><i class="fas fa-arrow-left"></i><span>Kembali</span></a>
+                        <a href="dashboard.php#pembangunan" class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-200 transition-all"><i class="fas fa-arrow-left"></i><span>Kembali</span></a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+<?php /* loading overlay */ include "../includes/ui.php"; ?>
 </body>
 </html>

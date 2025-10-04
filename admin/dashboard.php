@@ -1,6 +1,9 @@
 <?php
 include "../includes/db.php";
 include "../includes/auth.php";
+include "../includes/flash.php";
+
+$flash = function_exists('flash_get') ? flash_get() : [];
 
 // Statistik dashboard
 $total_desa = $conn->query("SELECT COUNT(*) as total FROM desa")->fetch_assoc()['total'];
@@ -202,6 +205,41 @@ $total_evaluasi_pending = $conn->query("SELECT COUNT(*) as total FROM evaluasi W
             </div>
         </header>
 
+        <?php if (!empty($flash)): ?>
+        <!-- Flash Modal -->
+        <div id="flash-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-[90%] p-6 border" role="dialog" aria-modal="true">
+                <?php
+                    $t = $flash['type'] ?? 'info';
+                    $title = htmlspecialchars($flash['title'] ?? 'Info');
+                    $msg = htmlspecialchars($flash['message'] ?? '');
+                    $ico = $t==='success' ? 'fa-check-circle text-green-600' : ($t==='error' ? 'fa-times-circle text-red-600' : ($t==='warning' ? 'fa-exclamation-triangle text-yellow-600' : 'fa-info-circle text-blue-600'));
+                    $bar = $t==='success' ? 'bg-green-500' : ($t==='error' ? 'bg-red-500' : ($t==='warning' ? 'bg-yellow-500' : 'bg-blue-500'));
+                ?>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-50 border">
+                        <i class="fas <?= $ico ?> text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-dark-800"><?= $title ?></h3>
+                </div>
+                <p class="text-dark-600 mb-4"><?= $msg ?></p>
+                <div class="flex justify-end">
+                    <button id="flash-close" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white <?= $bar ?> hover:opacity-90">
+                        <i class="fas fa-check"></i>
+                        <span>Tutup</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                const btn = document.getElementById('flash-close');
+                const m = document.getElementById('flash-modal');
+                if(btn && m){ btn.addEventListener('click', ()=> m.remove()); }
+            });
+        </script>
+        <?php endif; ?>
+
         <!-- Content -->
         <main class="p-4 md:p-6">
             <!-- Dashboard Tab -->
@@ -332,7 +370,7 @@ $total_evaluasi_pending = $conn->query("SELECT COUNT(*) as total FROM evaluasi W
                                                 <td class="px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm">
                                                     <div class="flex items-center md:flex-nowrap flex-wrap gap-2 md:gap-0 md:space-x-2">
                                                         <a href="edit_desa.php?id=<?= $d['id_desa'] ?>" class="inline-flex items-center px-3 py-1 rounded-lg bg-primary text-white text-xs"><i class="fas fa-edit mr-1"></i>Edit</a>
-                                                        <a href="hapus_desa.php?id=<?= $d['id_desa'] ?>" onclick="return confirm('Yakin hapus desa ini?')" class="inline-flex items-center px-3 py-1 rounded-lg bg-red-500 text-white text-xs"><i class="fas fa-trash mr-1"></i>Hapus</a>
+                                                        <a href="hapus_desa.php?id=<?= $d['id_desa'] ?>" onclick="return confirm('Yakin hapus desa ini?')" class="inline-flex items-center px-3 py-1 rounded-lg js-loading bg-red-500 text-white text-xs"><i class="fas fa-trash mr-1"></i>Hapus</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -392,7 +430,7 @@ $total_evaluasi_pending = $conn->query("SELECT COUNT(*) as total FROM evaluasi W
                                                 <td class="px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm">
                                                     <div class="flex items-center md:flex-nowrap flex-wrap gap-2 md:gap-0 md:space-x-2">
                                                         <a href="edit_anggaran.php?id=<?= $row['id_anggaran'] ?>" class="inline-flex items-center px-3 py-1 rounded-lg bg-primary text-white text-xs"><i class="fas fa-edit mr-1"></i>Edit</a>
-                                                        <a href="hapus_anggaran.php?id=<?= $row['id_anggaran'] ?>" onclick="return confirm('Yakin hapus anggaran ini?')" class="inline-flex items-center px-3 py-1 rounded-lg bg-red-500 text-white text-xs"><i class="fas fa-trash mr-1"></i>Hapus</a>
+                                                        <a href="hapus_anggaran.php?id=<?= $row['id_anggaran'] ?>" onclick="return confirm('Yakin hapus anggaran ini?')" class="inline-flex items-center px-3 py-1 rounded-lg js-loading bg-red-500 text-white text-xs"><i class="fas fa-trash mr-1"></i>Hapus</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -454,7 +492,7 @@ $total_evaluasi_pending = $conn->query("SELECT COUNT(*) as total FROM evaluasi W
                                                 <td class="px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm">
                                                     <div class="flex items-center md:flex-nowrap flex-wrap gap-2 md:gap-0 md:space-x-2">
                                                         <a href="edit_pembangunan.php?id=<?= $row['id_pembangunan'] ?>" class="inline-flex items-center px-3 py-1 rounded-lg bg-primary text-white text-xs"><i class="fas fa-edit mr-1"></i>Edit</a>
-                                                        <a href="hapus_pembangunan.php?id=<?= $row['id_pembangunan'] ?>" onclick="return confirm('Yakin hapus data pembangunan ini?')" class="inline-flex items-center px-3 py-1 rounded-lg bg-red-500 text-white text-xs"><i class="fas fa-trash mr-1"></i>Hapus</a>
+                                                        <a href="hapus_pembangunan.php?id=<?= $row['id_pembangunan'] ?>" onclick="return confirm('Yakin hapus data pembangunan ini?')" class="inline-flex items-center px-3 py-1 rounded-lg js-loading bg-red-500 text-white text-xs"><i class="fas fa-trash mr-1"></i>Hapus</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -522,7 +560,7 @@ $total_evaluasi_pending = $conn->query("SELECT COUNT(*) as total FROM evaluasi W
                                                 <td class="px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm">
                                                     <div class="flex items-center md:flex-nowrap flex-wrap gap-2 md:gap-0 md:space-x-2">
                                                         <a href="edit_evaluasi.php?id=<?= $row['id_evaluasi'] ?>" class="inline-flex items-center px-3 py-1 rounded-lg bg-primary text-white text-xs"><i class="fas fa-edit mr-1"></i>Edit</a>
-                                                        <a href="hapus_evaluasi.php?id=<?= $row['id_evaluasi'] ?>" onclick="return confirm('Yakin hapus evaluasi ini?')" class="inline-flex items-center px-3 py-1 rounded-lg bg-red-500 text-white text-xs"><i class="fas fa-trash mr-1"></i>Hapus</a>
+                                                        <a href="hapus_evaluasi.php?id=<?= $row['id_evaluasi'] ?>" onclick="return confirm('Yakin hapus evaluasi ini?')" class="inline-flex items-center px-3 py-1 rounded-lg js-loading bg-red-500 text-white text-xs"><i class="fas fa-trash mr-1"></i>Hapus</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -652,6 +690,7 @@ $total_evaluasi_pending = $conn->query("SELECT COUNT(*) as total FROM evaluasi W
             });
         });
     </script>
+<?php include "../includes/ui.php"; ?>
 </body>
 </html>
 

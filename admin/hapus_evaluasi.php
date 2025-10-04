@@ -1,16 +1,26 @@
 <?php
 include "../includes/db.php";
 include "../includes/auth.php";
+include "../includes/flash.php";
 
 if (isset($_GET['id'])) {
     $id = (int)$_GET['id'];
     
     $stmt = $conn->prepare("DELETE FROM evaluasi WHERE id_evaluasi = ?");
     $stmt->bind_param("i", $id);
-    $stmt->execute();
+    $ok = $stmt->execute();
+    $err = $stmt->error;
     $stmt->close();
+
+    if ($ok) {
+        flash_set('success', 'Berhasil', 'Data evaluasi berhasil dihapus.');
+    } else {
+        flash_set('error', 'Gagal', 'Gagal menghapus data evaluasi: ' . $err);
+    }
+} else {
+    flash_set('warning', 'Aksi Tidak Valid', 'Parameter id tidak ditemukan.');
 }
 
-header("Location: dashboard.php");
+header("Location: dashboard.php#evaluasi");
 exit;
 ?>

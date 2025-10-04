@@ -1,6 +1,7 @@
 <?php
 include "../includes/db.php";
 include "../includes/auth.php";
+include "../includes/flash.php";
 
 // Daftar jenis anggaran standar
 $jenis_anggaran_options = [
@@ -33,10 +34,16 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
     
     $stmt = $conn->prepare("UPDATE anggaran SET jenis_anggaran=?, tahun=?, jumlah=? WHERE id_anggaran=?");
     $stmt->bind_param("sidi", $jenis, $tahun, $jumlah, $id);
-    $stmt->execute();
+    $ok = $stmt->execute();
+    $err = $stmt->error;
     $stmt->close();
     
-    header("Location: dashboard.php");
+    if ($ok) {
+        flash_set('success', 'Berhasil', 'Perubahan anggaran telah disimpan.');
+    } else {
+        flash_set('error', 'Gagal', 'Gagal menyimpan perubahan: ' . $err);
+    }
+    header("Location: dashboard.php#anggaran");
     exit;
 }
 ?>
@@ -96,11 +103,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                     </div>
                     <div class="flex gap-3 pt-2">
                         <button type="submit" class="inline-flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-xl hover:opacity-90 transition-all"><i class="fas fa-save"></i><span>Update</span></button>
-                        <a href="dashboard.php" class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-200 transition-all"><i class="fas fa-arrow-left"></i><span>Kembali</span></a>
+                        <a href="dashboard.php#anggaran" class="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-xl hover:bg-gray-200 transition-all"><i class="fas fa-arrow-left"></i><span>Kembali</span></a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+<?php /* loading overlay */ include "../includes/ui.php"; ?>
 </body>
 </html>
