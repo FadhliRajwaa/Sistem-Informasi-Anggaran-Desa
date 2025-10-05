@@ -1,96 +1,135 @@
-# 🏛️ Sistem Informasi Transparansi Anggaran dan Pembangunan Desa
+# Sistem Transparansi Desa
 
-Aplikasi web untuk meningkatkan transparansi dan akuntabilitas pengelolaan anggaran serta pembangunan di tingkat desa.
-
-## ✨ Fitur Utama
-
-### 🌐 **Akses Publik**
-- **Pencarian Desa:** Cari informasi desa berdasarkan kecamatan
-- **Transparansi Anggaran:** Lihat detail anggaran per jenis dan tahun
-- **Data Pembangunan:** Informasi proyek pembangunan dan realisasinya
-- **Evaluasi Masyarakat:** Platform aspirasi dan pelaporan untuk masyarakat
-
-### 🔒 **Panel Administrator**
-- **Dashboard:** Statistik dan ringkasan data
-- **Manajemen Data:** CRUD lengkap untuk desa, anggaran, pembangunan, evaluasi
-- **Import CSV:** Upload data massal menggunakan template Excel/CSV
-- **Moderasi:** Kelola evaluasi masyarakat (approve/reject)
-
-## 🚀 Quick Start
-
-1. **Setup XAMPP:** Pastikan Apache dan MySQL berjalan
-2. **Import Database:** Jalankan `database.sql` dan `database_update.sql`
-3. **Akses Aplikasi:** Buka `http://localhost/transparansi_desa`
-
-## 🔐 Login Admin
-- **URL:** `/admin/login.php`
-- **Username:** `admin`
-- **Password:** `admin123`
-
-## 📊 Jenis Anggaran Standar
-1. Dana Desa
-2. Alokasi Dana Desa (ADD)
-3. Bantuan Keuangan Provinsi
-4. Swadaya Masyarakat
-5. Bagi Hasil Pajak
-6. Pendapatan Asli Desa (PADes)
-7. Lain-lain
-
-## 📁 Struktur File
-
-```
-transparansi_desa/
-├── admin/                 # Panel administrator
-│   ├── login.php         # Login admin
-│   ├── dashboard.php     # Dashboard utama
-│   ├── import_data.php   # Import CSV
-│   ├── templates/        # Template CSV
-│   └── *.php            # File CRUD admin
-├── includes/             # File utilities
-│   ├── db.php           # Koneksi database
-│   ├── auth.php         # Autentikasi
-│   ├── header.php       # Header template
-│   └── footer.php       # Footer template
-├── css/                 # Stylesheet
-├── index.php            # Halaman beranda
-├── desa.php             # Detail desa dengan tab
-├── evaluasi.php         # Form evaluasi publik
-├── database.sql         # Struktur database + data
-├── database_update.sql  # Update skema database
-└── PANDUAN_INSTALASI.md # Dokumentasi lengkap
-```
-
-## 💡 Teknologi
-
-- **Backend:** PHP 7.4+ dengan MySQLi prepared statements
-- **Frontend:** Bootstrap 5.3, Font Awesome 6.0, DataTables
-- **Database:** MySQL/MariaDB
-- **Security:** Password hashing, input sanitization, XSS protection
-
-## 📋 Template Import
-
-Sistem menyediakan template CSV untuk import data massal:
-- `template_desa.csv` - Data desa dan kepala desa
-- `template_anggaran.csv` - Data anggaran per jenis dan tahun
-- `template_pembangunan.csv` - Data proyek pembangunan
-- `template_evaluasi.csv` - Data evaluasi dan aspirasi
-
-## 🔗 URL Akses
-
-- **Beranda:** `/`
-- **Detail Desa:** `/desa.php?id_desa=[ID]`
-- **Evaluasi Publik:** `/evaluasi.php`
-- **Admin Panel:** `/admin/`
-
-## 📖 Dokumentasi
-
-Lihat file `PANDUAN_INSTALASI.md` untuk:
-- Instalasi step-by-step
-- Konfigurasi database
-- Troubleshooting
-- Maintenance
+Sistem web untuk transparansi data desa: informasi desa, anggaran, proyek pembangunan, serta kanal evaluasi/aspirasi dari masyarakat. Aplikasi ini menyediakan halaman publik yang elegan dan Panel Admin modern untuk mengelola data secara aman dan cepat.
 
 ---
 
-**🏛️ Sistem Informasi Transparansi Desa**  
-*Mendukung Good Governance dan Akuntabilitas Pemerintahan Desa*
+## Fitur Utama
+- **Publik**
+  - **Beranda** (`index.php`) dengan ringkasan informasi.
+  - **Daftar Desa** (`desa.php`) dengan pencarian/penyaringan sederhana.
+  - **Kirim Evaluasi** (`evaluasi.php`) lengkap dengan modal sukses/gagal dan overlay loading.
+- **Admin Panel** (`admin/dashboard.php`)
+  - Navigasi berbasis tab: `#desa`, `#anggaran`, `#pembangunan`, `#evaluasi`.
+  - CRUD lengkap (Tambah, Edit, Hapus) untuk semua modul.
+  - **Flash Modal** (sukses/gagal/peringatan) pasca operasi CRUD.
+  - **Loading Overlay** global saat submit/aksi penting.
+  - Redirect cerdas pasca CRUD ke tab yang relevan (mis. `#pembangunan`).
+  - Autentikasi admin (`admin/login.php`).
+
+---
+
+## Teknologi
+- **Backend**: PHP (mysqli, prepared statements), Session handler kustom (simpan di DB).
+- **Database**: MySQL/MariaDB.
+- **Frontend**: Tailwind CSS (CDN), Font Awesome (ikon), komponen UI ringan vanilla JS.
+- **Deploy-ready**: Konfigurasi environment variable untuk koneksi DB dan opsi SSL (Aiven/Vercel).
+
+---
+
+## Struktur Proyek (ringkas)
+- `admin/` — Panel Admin (dashboard, login, halaman CRUD).
+- `includes/` — Koneksi DB (`db.php`), session handler (`session.php`), flash helper (`flash.php`), overlay UI (`ui.php`).
+- `css/`, `api/`, `tools/` — aset/perkakas pendukung.
+- `sql/` — skrip seed contoh, mis. `sql/seed_rokanhulu_2025-10-03.sql`.
+- `index.php`, `desa.php`, `evaluasi.php` — halaman publik.
+
+---
+
+## Setup Lokal (XAMPP)
+- **Prasyarat**: XAMPP (Apache + PHP + MySQL/MariaDB), Git (opsional).
+- **Letakkan folder** ini ke `htdocs` (mis. `C:/Xampp/htdocs/transparansi_desa`).
+- **Buat database** (default: `transparansi_desa`).
+- **Import skema**:
+  - `database.sql` lalu `database_update.sql` (jika ada perubahan tambahan).
+  - Opsional: seed contoh `sql/seed_rokanhulu_2025-10-03.sql`.
+- **Buat akun admin** (opsi cepat menggunakan MD5 legacy yang didukung login):
+  ```sql
+  INSERT INTO admin (username, password)
+  VALUES ('admin', MD5('admin123'));
+  ```
+  Setelah login, harap ubah ke password hash modern via fitur aplikasi atau update manual ke `password_hash`.
+- **Jalankan**:
+  - Publik: `http://localhost/transparansi_desa/`
+  - Admin: `http://localhost/transparansi_desa/admin/login.php`
+
+> Catatan: File `includes/db.php` memakai environment variable bila tersedia, jika tidak akan jatuh ke default lokal: `localhost:3306`, user `root`, password kosong, DB `transparansi_desa`.
+
+---
+
+## Konfigurasi Koneksi Database (Environment Variable)
+`includes/db.php` membaca ENV berikut (opsional):
+- `DB_HOST` (default `localhost`)
+- `DB_PORT` (default `3306`)
+- `DB_USER` (default `root`)
+- `DB_PASS` (default kosong)
+- `DB_NAME` (default `transparansi_desa`)
+- `DB_SSL_MODE` (`DISABLED` | `REQUIRED`), default `DISABLED`
+- `DB_SSL_CA` (opsional; isi string CA jika perlu verifikasi ketat)
+
+Contoh `.htaccess` (opsional) untuk set ENV di Apache:
+```apache
+SetEnv DB_HOST your-db-host
+SetEnv DB_USER your-db-user
+SetEnv DB_PASS your-secret
+SetEnv DB_NAME transparansi_desa
+SetEnv DB_SSL_MODE DISABLED
+```
+
+---
+
+## Pola Navigasi & UX Admin
+- **Tab Dashboard** memakai hash URL. Contoh:
+  - `dashboard.php#desa` → tab Desa aktif.
+  - `dashboard.php#pembangunan` → tab Pembangunan aktif.
+- **Pasca CRUD** diarahkan ke tab terkait agar alur kerja konsisten.
+- **Tombol Kembali** pada setiap form admin mengarah ke tab terkait, bukan ke dashboard umum.
+- **Flash Modal & Loading Overlay**:
+  - `includes/flash.php` untuk set/get pesan satu kali (session).
+  - `includes/ui.php` menyisipkan overlay loading dan auto-aktif saat submit form atau elemen berkelas `js-loading` diklik.
+
+---
+
+## Keamanan
+- Query menggunakan **prepared statements**.
+- Session disimpan di DB (`includes/session.php`) dengan cookie `HttpOnly`, `SameSite=Lax`, dan opsi `Secure` saat HTTPS.
+- Disarankan mengaktifkan HTTPS dan mengganti kredensial default.
+
+---
+
+## Seed Data Contoh (Opsional)
+Gunakan `sql/seed_rokanhulu_2025-10-03.sql` untuk:
+- Koreksi penamaan desa tertentu.
+- Memastikan entri desa tertentu ada (UPSERT).
+- Men-generate dummy anggaran 2024 per desa bila belum ada.
+
+Jalankan lewat phpMyAdmin/CLI setelah import skema dasar.
+
+---
+
+## Troubleshooting
+- **Tombol tidak terlihat / warna tidak keluar**:
+  - Pastikan tidak meng-override warna standar Tailwind (mis. palet `orange`). Di file, gunakan key berbeda seperti `brand-orange` saat extend warna, bukan `orange` langsung.
+- **Overlay tidak hilang**:
+  - Pastikan `includes/ui.php` di-include sebelum `</body>` sehingga script berjalan setelah DOM siap, dan gunakan class `hidden` sebagai default.
+- **Selalu kembali ke dashboard umum**:
+  - Pastikan URL redirect mengandung hash tab (mis. `dashboard.php#evaluasi`).
+
+---
+
+## Deploy Singkat (opsional, Vercel + MySQL/Aiven)
+- Buat database MySQL terkelola (Aiven/PlanetScale/dll).
+- Set ENV: `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME`, serta `DB_SSL_MODE=REQUIRED` jika penyedia mewajibkan TLS.
+- Import `database.sql` ke database tersebut.
+- Pastikan runtime PHP yang Anda gunakan mendukung `mysqli`.
+
+---
+
+## Kontribusi
+- Fork → buat branch fitur → PR.
+- Sertakan deskripsi singkat perubahan dan alasan desain.
+
+---
+
+## Kredit
+Didesain untuk mendorong transparansi informasi desa dan partisipasi publik.
